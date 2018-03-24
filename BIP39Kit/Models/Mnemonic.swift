@@ -16,9 +16,9 @@ public enum MnemonicError: Error {
 
 public struct Mnemonic {
   
-  let words: [String]
+  public let words: [String]
   
-  var formatted: String {
+  public var formatted: String {
     return words.joined(separator: " ")
   }
   
