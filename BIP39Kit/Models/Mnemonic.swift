@@ -23,7 +23,7 @@ public struct Mnemonic {
   }
   
   public init(locale: Locale = Locale.current) throws {
-    try self.init(strength: 128, locale: locale)
+    try self.init(strength: 256, locale: locale)
   }
   
   public init(words: String) {
@@ -42,7 +42,7 @@ public struct Mnemonic {
     self = try Mnemonic.generate(entropy: bytes)
   }
   
-  init(strength: UInt8 = 128, rng: RandomNumberGenerator.Type = SecureRandomNumberGenerator.self, locale: Locale = Locale.current) throws {
+  init(strength: UInt = 128, rng: RandomNumberGenerator.Type = SecureRandomNumberGenerator.self, locale: Locale = Locale.current) throws {
     self = try Mnemonic.generate(strength: strength, rng: rng, locale: locale)
   }
   
@@ -66,7 +66,7 @@ public struct Mnemonic {
 
 extension Mnemonic {
   
-  static func generate(strength: UInt8 = 128,
+  static func generate(strength: UInt = 128,
                        rng: RandomNumberGenerator.Type = SecureRandomNumberGenerator.self,
                        locale: Locale = Locale.current) throws -> Mnemonic {
     
@@ -103,10 +103,11 @@ extension Mnemonic {
   
   static func deriveChecksumBits(buffer: Data) -> Binary {
     let ent = buffer.count * 8
-    let cs = ent / 16
+    let cs = ent / 32
     let hash = buffer.sha256
     let bin = Binary(data: hash)
     let bits = bin.bits(0 ..< cs)
-    return Binary(bytes: [UInt8(bits)])
+    let shift = 8 - cs
+    return Binary(bytes: [UInt8(bits << shift)])
   }
 }

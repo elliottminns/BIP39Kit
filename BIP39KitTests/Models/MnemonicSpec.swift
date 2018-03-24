@@ -54,6 +54,13 @@ class MnemonicSpec: QuickSpec {
         expect(hex) == "5cf2d4a8b0355e90295bdfc565a022a409af063d5365bb57bf74d9528f494bfa4400f53d8349b80fdae44082d7f9541e1dba2b003bcfec9d0d53781ca676651f"
       }
     }
+    
+    describe("Generating a random mnemonic") {
+      it("should work") {
+        let mnemonic = try? Mnemonic()
+        expect(mnemonic).toNot(beNil())
+      }
+    }
   }
 
 }

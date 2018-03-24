@@ -14,9 +14,12 @@ protocol RandomNumberGenerator {
 
 struct SecureRandomNumberGenerator: RandomNumberGenerator {
   static func generate(length: Int) -> Data? {
-    var data = Data(capacity: length)
-    let result = SecRandomCopyBytes(kSecRandomDefault, length, &data)
-    if (result == 0) {
+    var data = Data(count: length)
+    let result = data.withUnsafeMutableBytes {
+      (mutableBytes: UnsafeMutablePointer<UInt8>) -> Int32 in
+      SecRandomCopyBytes(kSecRandomDefault, data.count, mutableBytes)
+    }
+    if (result == errSecSuccess) {
       return data
     } else {
       return nil
