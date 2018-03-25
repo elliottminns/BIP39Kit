@@ -51,14 +51,14 @@ public struct Mnemonic {
     return "mnemonic\(pw)"
   }
   
-  private func seed() -> Data {
+  public func seed() -> Data {
     let str = self.formatted.precomposedStringWithCompatibilityMapping
     let slt = salt().precomposedStringWithCompatibilityMapping.data(using: .utf8) ?? Data()
     let data = str.pbkdf2SHA512(salt: slt, keyByteCount: 64, rounds: 2048)
     return data!
   }
   
-  private func seedHex() -> String {
+  public func seedHex() -> String {
     return seed().hexEncodedString()
   }
   
